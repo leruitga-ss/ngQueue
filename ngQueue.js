@@ -60,7 +60,7 @@ function ($q,   $window,   $timeout,   $rootScope,   $filter) {
   p.enqueue = function (todo, context, args) {
     var task = [todo, context, args];
 
-    this._queue.push([todo, context, args]);
+    this._queue.push(task);
 
     if (this._config.statistics) {
       this.updateStats();
@@ -71,8 +71,13 @@ function ($q,   $window,   $timeout,   $rootScope,   $filter) {
   };
 
   p.remove = function (task) {
-    var index = this._queue.indexOf(task),
-    item = this._queue.splice(index, 1)[0];
+    var index = this._queue.indexOf(task);
+
+    if (index === -1) {
+      return null;
+    }
+
+    var item = this._queue.splice(index, 1)[0];
     if (this._config.statistics) {
       this.updateStats();
     }
